@@ -68,6 +68,12 @@ See `docs/LITERATURE.md` for the prior-art map.
 corpus prior you can attach to any llama.cpp / transformers model
 in minutes, on CPU, with kilobytes-to-megabytes of memory.
 
+## Visualization
+
+The full three-layer architecture (Morin canvas → node signalizers →
+Sauron's Eye with verification) as an interactive dark SVG diagram:
+`docs/full_scheme_diagram.html` — open in any browser, works offline.
+
 ## Research history
 
 ### Fracode Phase 0–1: the compression era
