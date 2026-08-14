@@ -5,6 +5,8 @@ next-token distribution with n-gram frequencies from a local corpus.
 The mixture improves both perplexity and top-1 accuracy while
 concentrating probability mass on far fewer candidates.
 
+> 🇷🇺 **[Русская версия](README.ru.md)**
+
 Named after the *Morin surface* intuition that started the research:
 most locally plausible transitions in a token graph are "phantom" —
 they never actually occur in context. A corpus table knows which
@@ -68,12 +70,42 @@ in minutes, on CPU, with kilobytes-to-megabytes of memory.
 
 ## Research history
 
-The full journey — 19 experiments, the falsifications we caught
-(the best one: a data leak that halved our recall estimate), the
-geometries that failed (Levy, Hilbert, tesseract, Möbius, Poincaré
-relay), and the one effect that survived — is in
-`docs/FULL_JOURNEY.md`. It is a journal of hypothesis elimination,
-and we consider it the most honest part of this repository.
+### Fracode Phase 0–1: the compression era
+
+This project started as **Fracode**, an attempt to build a fractal
+compression codec. Phase 0 produced a benchmarked container codec —
+and an honest loss: `zstd` + dictionary beat it on real data. Phase 1
+explored semantic codebooks, terminal-style addressing, Russian chat
+corpora — a long series of negative results, each falsified against
+adversarial checks before being recorded. That phase taught the
+project's core habit: **when a result looks too good, it is too good —
+verify until it breaks.**
+
+### Fracode Phase 2: the geometry race
+
+The question became: can an address-space geometry (Lévy curves,
+Hilbert, tesseract, Möbius, Poincaré relay) make routing cheaper?
+Experiments A–Q measured every proposed geometry on real data. All of
+them failed to beat a plain Euclidean k-means router; the routing idea
+converged to a known pattern (MoE). The one intuition that survived —
+the *Morin surface as a model of token paths* — led to the discovery
+that ~90% of local token cycles are **phantom** (plausible locally,
+impossible globally), and that pruning them helps both speed and
+accuracy. That became the corpus prior in this package.
+
+### Where we ended up (honest accounting)
+
+The winning mechanism turned out to be known: Jelinek–Mercer smoothing
+(1980), Cache LM (2017), kNN-LM (2020). What survived the literature
+check is an engineering angle: **the same gain as kNN-LM at a fraction
+of the memory** — a plain n-gram table instead of a billion-scale
+embedding index.
+
+The full journey — 22 experiments, the falsifications we caught (the
+best one: a data leak that inflated our recall estimate by 5 p.p.),
+the geometries that failed, and the one effect that survived — is in
+`docs/FULL_JOURNEY.md`. It is a journal of hypothesis elimination, and
+we consider it the most honest part of this repository.
 
 ## License
 
