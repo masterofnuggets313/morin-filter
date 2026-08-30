@@ -1,0 +1,15 @@
+{
+  "model": "DeepSeek-Coder-V2-Lite-Instruct-IQ4_XS.gguf",
+  "n": 200,
+  "notebook_entries": 485,
+  "ppl": {
+    "nb0": 2.7797470602116308,
+    "nb1": 2.7746191259112707,
+    "nb2": 2.7903244360583344
+  },
+  "acc": {
+    "nb0": 0.75,
+    "nb1": 0.755,
+    "nb2": 0.785
+  }
+}
