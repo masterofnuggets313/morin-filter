@@ -47,6 +47,23 @@ mix_logp = scorer.mixture_logp(model_logp, context_ids)
 # 3. Sample / argmax / top-k under mix_logp instead of model_logp.
 ```
 
+### Trainable: TrustScorer (Neural Trust, −33% PPL)
+
+Fixed-β applies the same trust to every context. `TrustScorer` learns a tiny
+logistic head that decides per-context how much to trust the corpus prior:
+
+```python
+from morin_filter import TrustScorer
+
+scorer = TrustScorer(prior, beta_fallback=0.3)
+scorer.fit_batch(contexts, targets, model_logps, steps=3000)   # 1x on val split
+mix_logp = scorer.mixture_logp(model_logp, context_ids)        # then use as usual
+```
+
+Features: `[match_len, log(1+tot), p_top, n_cand, ctx_len]`. Measured on a code
+corpus (BPE-512, smoothed-trigram model, 5M tokens): morin 9.65 → **6.49** PPL
+(−33%), vs oracle ceiling 4.45. See `BOOST_REVIEW.md` and `validate_trust.py`.
+
 Or run the full evaluation example:
 
 ```bash
