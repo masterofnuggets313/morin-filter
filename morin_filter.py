@@ -173,7 +173,7 @@ class TrustScorer:
       TrustScorer       : PPL 6.49   (−33%)
     """
 
-    FEATURES = 5
+    FEATURES = 6
 
     def __init__(self, prior: CorpusPrior, beta_fallback: float = 0.3,
                  max_back: int = 8):
@@ -201,8 +201,11 @@ class TrustScorer:
         table, tot, match_len = bt
         p_top = max(table.values()) / tot
         n_cand = len(table)
-        return np.array([match_len, math.log1p(tot), p_top, n_cand, len(key)],
-                        dtype=np.float64)
+        # entropy of the prior distribution (catches shape beyond p_top)
+        ps = np.array(list(table.values()), dtype=np.float64) / tot
+        entropy = float(-(ps * np.log(ps)).sum())
+        return np.array([match_len, math.log1p(tot), p_top, n_cand,
+                         len(key), entropy], dtype=np.float64)
 
     def _prior_logp(self, key: tuple, V: int) -> Optional[np.ndarray]:
         """Corpus log-probs over vocab using the same max_back backoff."""
