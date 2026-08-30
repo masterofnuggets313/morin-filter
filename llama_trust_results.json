@@ -1,0 +1,10 @@
+{
+  "model": "DeepSeek-Coder-V2-Lite-Instruct-IQ4_XS.gguf",
+  "n": 200,
+  "baseline_ppl": 3.635588952264876,
+  "morin_ppl": 2.7797470602116308,
+  "trust_ppl": 2.7844521296654503,
+  "baseline_acc": 0.705,
+  "morin_acc": 0.75,
+  "trust_acc": 0.77
+}
